@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import React, { Component } from 'react';
+import Gameplay from './components/Gameplay';
+import GameEnd from './components/GameEnd';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    scores: { player1: 0, player2: 0 }
+  };
+  render() {
+    return (
+      <div>
+        <Gameplay updateScore={this.updateScore} />
+        <GameEnd />
+      </div>
+    );
+  }
+
+  updateScore = (turn, playerx) => {
+    this.setState(({ scores }) => {
+      const newScores = { ...scores };
+      if (turn === 'X') {
+        newScores[playerx] += 1;
+      } else {
+        playerx === 'player1' ? newScores.player2++ : newScores.player1++;
+      }
+      console.log(newScores);
+      return { scores: newScores };
+    });
+  };
 }
 
 export default App;
